@@ -81,7 +81,7 @@ function App() {
             You Current Balance is:{" "}
             <span className={`${balance < 0 ? "text-red-500 font-semibold" : "text-white"}`}>{internationalizeCurrency(balance)} </span>
           </p>
-          <button
+          {/* <button
             className=" ml-2 py-1 px-2 shadow-md no-underline rounded-full bg-green-500 text-white font-sans font-semibold  text-xs border-green-500 btn-primary hover:text-white hover:bg-green-500-light focus:outline-none active:shadow-none"
             onClick={() => ""}
           >
@@ -92,7 +92,7 @@ function App() {
             onClick={() => ""}
           >
             Add +
-          </button>
+          </button> */}
         </div>
 
         <form onSubmit={handleAddExpense}>
@@ -159,22 +159,22 @@ function App() {
                       <li className="py-3 sm:py-4" key={uuid()}>
                         <div className="flex items-center space-x-4">
                           <div className="flex-shrink-0">
-                            <div className="flex items-center justify-center rounded-full  w-10 h-10 ">{expense.title[0]}</div>
+                            <div className="flex items-center justify-center rounded-full bg-gray-400 text-white  w-10 h-10 ">{expense.title[0]}</div>
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-medium text-gray-900 truncate dark:text-white">{expense.title}</p>
-                            <spa className="text-sm text-gray-500 truncate dark:text-gray-400">
-                              You spent it at {formatRelative(addDays(expense.date, 0), new Date())}
-                              <button
-                                className=" ml-2 py-1 px-2 shadow-md no-underline rounded-full bg-red-500 text-white font-sans font-semibold  text-xs border-red-500 btn-primary hover:text-white hover:bg-red-500-light focus:outline-none active:shadow-none"
-                                onClick={() => handleRemoveExpense(expense.id)}
-                              >
-                                Remove
-                              </button>
-                            </spa>
+                            <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                              {formatRelative(addDays(expense.date, 0), new Date())}
+                            </p>
                           </div>
                           <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                             {internationalizeCurrency(expense.amount)}{" "}
+                            <button
+                              className=" ml-2  scale-[0.8] py-1 px-2 shadow-md no-underline rounded-full bg-red-500 text-white font-sans font-semibold  text-xs border-red-500 btn-primary hover:text-white hover:bg-red-500-light focus:outline-none active:shadow-none"
+                              onClick={() => handleRemoveExpense(expense.id)}
+                            >
+                              Remove
+                            </button>
                           </div>
                         </div>
                       </li>
