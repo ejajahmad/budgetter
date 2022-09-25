@@ -1,22 +1,20 @@
 import { useState } from "react";
 import uuid from "react-uuid";
+import formatRelative from "date-fns/formatRelative";
 import { useLocalStorage, internationalizeCurrency } from "./hooks";
+import { addDays } from "date-fns";
 
 function App() {
   const [expenses, setExpenses] = useLocalStorage("expenses", []);
-
   const [balanceValue, setBalanceValue] = useState("");
   const [balance, setBalance] = useLocalStorage("balance", 0);
-
   const [viewAllExpense, setViewAllExpense] = useState(false);
-
-  // const [expenses, setExpenses] = useState([]);
 
   const [currentExpense, setCurrentExpense] = useState({
     id: uuid(),
     title: "",
     amount: "",
-    date: new Date().toDateString(),
+    date: Date.now(),
   });
 
   const handleAddBalance = (e) => {
@@ -32,7 +30,7 @@ function App() {
       id: uuid(),
       title: "",
       amount: "",
-      date: new Date().toDateString(),
+      date: Date.now(),
     });
   };
 
@@ -78,10 +76,24 @@ function App() {
       </form>
 
       <div className="w-full h-full bg-gray-700 rounded-md text-white p-3 flex flex-col gap-3">
-        <p className=" text-2xl">
-          You Current Balance is:{" "}
-          <span className={`${balance < 0 ? "text-red-500 font-semibold" : "text-white"}`}>{internationalizeCurrency(balance)} </span>
-        </p>
+        <div className="flex items-center">
+          <p className=" text-2xl">
+            You Current Balance is:{" "}
+            <span className={`${balance < 0 ? "text-red-500 font-semibold" : "text-white"}`}>{internationalizeCurrency(balance)} </span>
+          </p>
+          <button
+            className=" ml-2 py-1 px-2 shadow-md no-underline rounded-full bg-green-500 text-white font-sans font-semibold  text-xs border-green-500 btn-primary hover:text-white hover:bg-green-500-light focus:outline-none active:shadow-none"
+            onClick={() => ""}
+          >
+            Change *
+          </button>
+          <button
+            className=" ml-2 py-1 px-2 shadow-md no-underline rounded-full bg-lime-500 text-white font-sans font-semibold  text-xs border-lime-500 btn-primary hover:text-white hover:bg-lime-500-light focus:outline-none active:shadow-none"
+            onClick={() => ""}
+          >
+            Add +
+          </button>
+        </div>
 
         <form onSubmit={handleAddExpense}>
           <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300">
@@ -136,6 +148,7 @@ function App() {
                 {viewAllExpense ? "Show less" : "View all"}
               </button>
             </div>
+            {console.log(expenses)}
             <div className="flow-root">
               <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
                 {expenses
@@ -150,15 +163,15 @@ function App() {
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-medium text-gray-900 truncate dark:text-white">{expense.title}</p>
-                            <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                              You spent it at {expense.date}{" "}
+                            <spa className="text-sm text-gray-500 truncate dark:text-gray-400">
+                              You spent it at {formatRelative(addDays(expense.date, 0), new Date())}
                               <button
                                 className=" ml-2 py-1 px-2 shadow-md no-underline rounded-full bg-red-500 text-white font-sans font-semibold  text-xs border-red-500 btn-primary hover:text-white hover:bg-red-500-light focus:outline-none active:shadow-none"
                                 onClick={() => handleRemoveExpense(expense.id)}
                               >
                                 Remove
                               </button>
-                            </p>
+                            </spa>
                           </div>
                           <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                             {internationalizeCurrency(expense.amount)}{" "}
