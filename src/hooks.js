@@ -24,7 +24,8 @@ function useLocalStorage(key, initialValue) {
   const setValue = (value) => {
     try {
       // Allow value to be a function so we have same API as useState
-      const valueToStore = value instanceof Function ? value(storedValue) : value;
+      const valueToStore =
+        value instanceof Function ? value(storedValue) : value;
       // Save state
       setStoredValue(valueToStore);
       // Save to local storage
@@ -42,7 +43,10 @@ function useLocalStorage(key, initialValue) {
 // Internationalize Currency
 
 function internationalizeCurrency(number) {
-  return new Intl.NumberFormat(navigator.language ? navigator.language : "en-US", { style: "currency", currency: "INR" }).format(number);
+  return new Intl.NumberFormat(
+    navigator.language ? navigator.language : "en-US",
+    { style: "currency", currency: "INR" }
+  ).format(number);
 }
 
 export { useLocalStorage, internationalizeCurrency };

@@ -4,6 +4,18 @@ import formatRelative from "date-fns/formatRelative";
 import { useLocalStorage, internationalizeCurrency } from "./hooks";
 import { addDays } from "date-fns";
 import Modal from "./components/modal";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
 function App() {
   const [expenses, setExpenses] = useLocalStorage("expenses", []);
@@ -109,7 +121,7 @@ function App() {
   }, []);
 
   return (
-    <div className=" p-2 h-screen  space-y-2 bg-[#1f2937]">
+    <div className=" mx-auto w-full p-2  space-y-2 bg-[#1f2937]">
       {/* Balance Change Modal */}
 
       {showModal && (
@@ -190,6 +202,7 @@ function App() {
       </form>
 
       <div className="w-full h-full bg-gray-700 rounded-md text-white p-3 flex flex-col gap-3">
+        {/* Current Balance Viewer */}
         <div className="flex items-center">
           <p className=" text-2xl flex items-center gap-2 flex-wrap">
             You Current Balance is:{" "}
@@ -209,6 +222,7 @@ function App() {
           </p>
         </div>
 
+        {/* Add Expense Form */}
         <form onSubmit={handleAddExpense}>
           <label
             htmlFor="default-search"
@@ -246,7 +260,7 @@ function App() {
             </select>
             <input
               type="text"
-              className="block p-4 sm:pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="block p-4 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="What's you recent expense?"
               value={currentExpense.title}
               onChange={(e) =>
@@ -256,7 +270,7 @@ function App() {
             />
             <input
               type="number"
-              className="block p-4 sm:pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="block p-4  w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="How much did you spend?"
               value={currentExpense.amount}
               onChange={(e) =>
@@ -273,6 +287,18 @@ function App() {
           </div>
         </form>
 
+        {/* Toolbar */}
+
+        <div className="w-full">
+          <button className=" ml-2 py-1 px-2 shadow-md no-underline rounded-full bg-amber-500 hover:bg-amber-600 text-white font-sans font-semibold  text-xs border-amber-500 btn-primary hover:text-white hover:bg-green-500-light focus:outline-none active:shadow-none">
+            Salary Automate
+          </button>
+          <button className=" ml-2 py-1 px-2 shadow-md no-underline rounded-full bg-teal-500 hover:bg-teal-600 text-white font-sans font-semibold  text-xs border-teal-500 btn-primary hover:text-white hover:bg-green-500-light focus:outline-none active:shadow-none">
+            Auto Expense
+          </button>
+        </div>
+
+        {/* Expense List */}
         {expenses.length > 0 && (
           <div className="p-4  bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
             <div className="flex justify-between items-center mb-4">
@@ -287,9 +313,8 @@ function App() {
                 {viewAllExpense ? "Show less" : "View all"}
               </button>
             </div>
-            {console.log(expenses)}
             <div className="flow-root">
-              <p className=" text-2xl flex items-center gap-2 flex-wrap text-gray-800 dark:text-white">
+              <p className=" text-md flex items-center gap-2 flex-wrap text-gray-800 dark:text-white">
                 Today you spend:{" "}
                 <span className="text-red-500">
                   -
@@ -357,6 +382,33 @@ function App() {
             </div>
           </div>
         )}
+      </div>
+      {/* Charts */}
+      <div className="w-full  bg-gray-700 rounded-md text-white p-3 flex flex-col items-center justify-center gap-3 ">
+        <h2 className="text-2xl font-bold">Today's Expense Chart</h2>
+        <LineChart
+          width={500}
+          height={400}
+          className=" scale-50 sm:scale-100"
+          data={expenses
+            .filter(
+              (expense) =>
+                new Date(expense.date).getDate() === new Date().getDate()
+            )
+            .map((expense) => {
+              return {
+                name: expense.title,
+                uv: 400,
+                pv: parseInt(balance),
+                amt: parseInt(expense.amount),
+              };
+            })
+            .reverse()}
+        >
+          <Line type="monotone" dataKey="amt" stroke="rgb(239, 68, 68)" />
+          <XAxis dataKey="name" />
+          <YAxis dataKey="amt" />
+        </LineChart>
       </div>
     </div>
   );
