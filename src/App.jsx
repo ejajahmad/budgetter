@@ -318,16 +318,15 @@ function App() {
                       <li className="py-3 sm:py-4" key={uuid()}>
                         <div className="flex items-center space-x-4">
                           <div className="flex-shrink-0">
-                            <div className="flex items-center justify-center rounded-full bg-gray-400 text-white  w-10 h-10 ">
-                              {expense?.category[0]?.icon ? (
-                                <img
-                                  src={expense.category[0].icon}
-                                  alt={expense.value}
-                                  className="w-5 h-5"
-                                />
-                              ) : (
-                                expense.title[0]
-                              )}
+                            <div className="flex items-center justify-center rounded-full bg-gray-400 text-white  w-10 h-10 font-bold ">
+                              {expense?.category
+                                ? // <img
+                                  //   src={expense.category[0].icon}
+                                  //   alt={expense.value}
+                                  //   className="w-5 h-5"
+                                  // />
+                                  expense.category[0].name[0]
+                                : expense.title[0]}
                             </div>
                           </div>
                           <div className="flex-1 min-w-0">
