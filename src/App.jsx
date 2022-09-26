@@ -9,11 +9,15 @@ import {
   Line,
   XAxis,
   YAxis,
+  BarChart,
+  Bar,
+  Cell,
   CartesianGrid,
   Tooltip,
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import SalaryAutomate from "./components/SalaryAutomate";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
@@ -24,6 +28,13 @@ function App() {
   const [modalBalanceValue, setModalBalanceValue] = useState(balance);
   const [viewAllExpense, setViewAllExpense] = useState(false);
   const [showModal, setShowModal] = useState(false);
+
+  const [salaryAuto, setSalaryAuto] = useLocalStorage("salaryAuto", {
+    salary: "",
+    salaryDate: "",
+    showModal: false,
+    isDone: false,
+  });
 
   const [expenseCategories, setExpenseCategories] = useState([
     {
@@ -105,19 +116,55 @@ function App() {
   };
 
   useEffect(() => {
-    if (expenses.length > 0) {
-      console.log(
-        "Expenses",
-        expenses
-          .filter(
-            (expense) =>
-              new Date(expense.date).getDate() === new Date().getDate()
-          )
-          .reduce(function (previousValue, currentValue) {
-            return +previousValue + parseInt(currentValue.amount);
-          }, 0)
-      );
+    if (
+      new Date(salaryAuto.salaryDate).getTime() < new Date().getTime() &&
+      salaryAuto.isDone === false
+    ) {
+      console.log("Salary Credited!", salaryAuto);
+      setBalance((prev) => +prev + parseInt(salaryAuto.salary));
+      setSalaryAuto({ ...salaryAuto, isDone: true });
     }
+  }, [salaryAuto.salary, salaryAuto.salaryDate, salaryAuto.isDone]);
+
+  useEffect(() => {
+    const months = {
+      January: expenses.filter(
+        (expense) => new Date(expense.date).getMonth() === 0
+      ),
+      February: expenses.filter(
+        (expense) => new Date(expense.date).getMonth() === 1
+      ),
+      March: expenses.filter(
+        (expense) => new Date(expense.date).getMonth() === 2
+      ),
+      April: expenses.filter(
+        (expense) => new Date(expense.date).getMonth() === 3
+      ),
+      May: expenses.filter(
+        (expense) => new Date(expense.date).getMonth() === 4
+      ),
+      June: expenses.filter(
+        (expense) => new Date(expense.date).getMonth() === 5
+      ),
+      July: expenses.filter(
+        (expense) => new Date(expense.date).getMonth() === 6
+      ),
+      August: expenses.filter(
+        (expense) => new Date(expense.date).getMonth() === 7
+      ),
+      September: expenses.filter(
+        (expense) => new Date(expense.date).getMonth() === 8
+      ),
+      October: expenses.filter(
+        (expense) => new Date(expense.date).getMonth() === 9
+      ),
+      November: expenses.filter(
+        (expense) => new Date(expense.date).getMonth() === 10
+      ),
+      December: expenses.filter(
+        (expense) => new Date(expense.date).getMonth() === 11
+      ),
+    };
   }, []);
 
   return (
@@ -127,7 +174,7 @@ function App() {
       {showModal && (
         <Modal
           onHide={() => setShowModal(false)}
-          confirm={() => setBalance(modalBalanceValue)}
+          confirm={() => setShowModal(false)}
         >
           <h2>You Current Balance</h2>
           <div>
@@ -146,13 +193,18 @@ function App() {
                 id="default-search"
                 className="block p-4 pl-8 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Enter you current balance"
-                value={modalBalanceValue}
-                onChange={(e) => setModalBalanceValue(e.target.value)}
+                value={balance}
+                onChange={(e) => setBalance(e.target.value)}
                 required
               />
             </div>
           </div>
         </Modal>
+      )}
+
+      {/* Salary Automate */}
+      {salaryAuto.showModal && (
+        <SalaryAutomate salaryAuto={salaryAuto} setSalaryAuto={setSalaryAuto} />
       )}
 
       <p className="text-2xl text-white text-center my-5">Budgetter</p>
@@ -289,11 +341,32 @@ function App() {
 
         {/* Toolbar */}
 
-        <div className="w-full">
-          <button className=" ml-2 py-1 px-2 shadow-md no-underline rounded-full bg-amber-500 hover:bg-amber-600 text-white font-sans font-semibold  text-xs border-amber-500 btn-primary hover:text-white hover:bg-green-500-light focus:outline-none active:shadow-none">
+        <div className="w-full  flex items-center justify-center sm:justify-start flex-wrap gap-2 ">
+          <button className=" py-1 px-2 shadow-md no-underline rounded-full bg-emerald-500 hover:bg-emerald-600 text-white font-sans font-semibold  text-xs border-emerald-500 btn-primary hover:text-white hover:bg-green-500-light focus:outline-none active:shadow-none disabled:opacity-50 ">
+            Salary Divider
+          </button>
+          <button className=" py-1 px-2 shadow-md no-underline rounded-full bg-purple-500 hover:bg-purple-600 text-white font-sans font-semibold  text-xs border-purple-500 btn-primary hover:text-white hover:bg-green-500-light focus:outline-none active:shadow-none disabled:opacity-50 ">
+            Price Calculator
+          </button>
+          <button className=" py-1 px-2 shadow-md no-underline rounded-full bg-sky-500 hover:bg-sky-600 text-white font-sans font-semibold  text-xs border-sky-500 btn-primary hover:text-white hover:bg-green-500-light focus:outline-none active:shadow-none disabled:opacity-50 ">
+            EMI Calculator
+          </button>
+          <button className=" py-1 px-2 shadow-md no-underline rounded-full bg-indigo-500 hover:bg-indigo-600 text-white font-sans font-semibold  text-xs border-indigo-500 btn-primary hover:text-white hover:bg-green-500-light focus:outline-none active:shadow-none disabled:opacity-50 ">
+            Tip Calculator
+          </button>
+          <button className=" py-1 px-2 shadow-md no-underline rounded-full bg-pink-500 hover:bg-pink-600 text-white font-sans font-semibold  text-xs border-pink-500 btn-primary hover:text-white hover:bg-green-500-light focus:outline-none active:shadow-none disabled:opacity-50 ">
+            Udhaar Book
+          </button>
+          <button
+            className=" py-1 px-2 shadow-md no-underline rounded-full bg-amber-500 hover:bg-amber-600 text-white font-sans font-semibold  text-xs border-amber-500 btn-primary hover:text-white hover:bg-green-500-light focus:outline-none active:shadow-none disabled:opacity-50 "
+            disabled
+          >
             Salary Automate
           </button>
-          <button className=" ml-2 py-1 px-2 shadow-md no-underline rounded-full bg-teal-500 hover:bg-teal-600 text-white font-sans font-semibold  text-xs border-teal-500 btn-primary hover:text-white hover:bg-green-500-light focus:outline-none active:shadow-none">
+          <button
+            className=" py-1 px-2 shadow-md no-underline rounded-full bg-teal-500 hover:bg-teal-600 text-white font-sans font-semibold  text-xs border-teal-500 btn-primary hover:text-white hover:bg-green-500-light focus:outline-none active:shadow-none disabled:opacity-50 "
+            disabled
+          >
             Auto Expense
           </button>
         </div>
