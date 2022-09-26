@@ -18,6 +18,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import SalaryAutomate from "./components/SalaryAutomate";
+import SalaryDivider from "./components/SalaryDivider";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
@@ -35,6 +36,8 @@ function App() {
     showModal: false,
     isDone: false,
   });
+
+  const [showSalaryDivider, setShowSalaryDivider] = useState(false);
 
   const [expenseCategories, setExpenseCategories] = useState([
     {
@@ -168,7 +171,7 @@ function App() {
   }, []);
 
   return (
-    <div className=" mx-auto w-full p-2  space-y-2 bg-[#1f2937]">
+    <div className=" mx-auto  p-2  space-y-2 bg-[#1f2937]">
       {/* Balance Change Modal */}
 
       {showModal && (
@@ -205,6 +208,10 @@ function App() {
       {/* Salary Automate */}
       {salaryAuto.showModal && (
         <SalaryAutomate salaryAuto={salaryAuto} setSalaryAuto={setSalaryAuto} />
+      )}
+
+      {showSalaryDivider && (
+        <SalaryDivider setShowModal={setShowSalaryDivider} />
       )}
 
       <p className="text-2xl text-white text-center my-5">Budgetter</p>
@@ -342,7 +349,10 @@ function App() {
         {/* Toolbar */}
 
         <div className="w-full  flex items-center justify-center sm:justify-start flex-wrap gap-2 ">
-          <button className=" py-1 px-2 shadow-md no-underline rounded-full bg-emerald-500 hover:bg-emerald-600 text-white font-sans font-semibold  text-xs border-emerald-500 btn-primary hover:text-white hover:bg-green-500-light focus:outline-none active:shadow-none disabled:opacity-50 ">
+          <button
+            className=" py-1 px-2 shadow-md no-underline rounded-full bg-emerald-500 hover:bg-emerald-600 text-white font-sans font-semibold  text-xs border-emerald-500 btn-primary hover:text-white hover:bg-green-500-light focus:outline-none active:shadow-none disabled:opacity-50 "
+            onClick={() => setShowSalaryDivider(true)}
+          >
             Salary Divider
           </button>
           <button className=" py-1 px-2 shadow-md no-underline rounded-full bg-purple-500 hover:bg-purple-600 text-white font-sans font-semibold  text-xs border-purple-500 btn-primary hover:text-white hover:bg-green-500-light focus:outline-none active:shadow-none disabled:opacity-50 ">
