@@ -17,32 +17,32 @@ function App() {
     {
       id: 1,
       name: "Transportation",
-      icon: "/src/icons/bus-outline.svg",
+      icon: "/icons/bus-outline.svg",
     },
     {
       id: 2,
       name: "Food",
-      icon: "/src/icons/fast-food-outline.svg",
+      icon: "/icons/fast-food-outline.svg",
     },
     {
       id: 3,
       name: "Fun",
-      icon: "/src/icons/happy-outline.svg",
+      icon: "/icons/happy-outline.svg",
     },
     {
       id: 4,
       name: "Gadgets",
-      icon: "/src/icons/phone-portrait-outline.svg",
+      icon: "/icons/phone-portrait-outline.svg",
     },
     {
       id: 5,
       name: "Clothing",
-      icon: "/src/icons/shirt-outline.svg",
+      icon: "/icons/shirt-outline.svg",
     },
     {
       id: 6,
       name: "Misc",
-      icon: "/src/icons/layers-outline.svg",
+      icon: "/icons/layers-outline.svg",
     },
   ]);
 
