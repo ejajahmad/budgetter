@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import uuid from "react-uuid";
 import formatRelative from "date-fns/formatRelative";
 import { useLocalStorage, internationalizeCurrency } from "./hooks";
@@ -40,6 +40,19 @@ function App() {
   const handleRemoveExpense = (id) => {
     setExpenses((prev) => prev.filter((expense) => expense.id !== id));
   };
+
+  useEffect(() => {
+    if (expenses.length > 0) {
+      console.log(
+        "Expenses",
+        expenses
+          .filter((expense) => new Date(expense.date).getDate() === new Date().getDate())
+          .reduce(function (previousValue, currentValue) {
+            return +previousValue + parseInt(currentValue.amount);
+          }, 0)
+      );
+    }
+  }, []);
 
   return (
     <div className=" p-2 h-screen  space-y-2 bg-[#1f2937]">
@@ -112,6 +125,7 @@ function App() {
               Change *
             </button>
           </p>
+
           {/* <button
             className=" ml-2 py-1 px-2 shadow-md no-underline rounded-full bg-green-500 text-white font-sans font-semibold  text-xs border-green-500 btn-primary hover:text-white hover:bg-green-500-light focus:outline-none active:shadow-none"
             onClick={() => ""}
@@ -181,9 +195,22 @@ function App() {
             </div>
             {console.log(expenses)}
             <div className="flow-root">
+              <p className=" text-2xl flex items-center gap-2 flex-wrap">
+                Today you spend:{" "}
+                <span className="text-red-500">
+                  -
+                  {internationalizeCurrency(
+                    expenses
+                      .filter((expense) => new Date(expense.date).getDate() === new Date().getDate())
+                      .reduce(function (previousValue, currentValue) {
+                        return +previousValue + parseInt(currentValue.amount);
+                      }, 0)
+                  )}{" "}
+                </span>
+              </p>
               <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
                 {expenses
-                  .reverse()
+                  .sort((a, b) => b.date - a.date)
                   .slice(0, viewAllExpense ? expenses.length : 5)
                   .map((expense) => {
                     return (
