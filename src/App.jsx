@@ -3,12 +3,15 @@ import uuid from "react-uuid";
 import formatRelative from "date-fns/formatRelative";
 import { useLocalStorage, internationalizeCurrency } from "./hooks";
 import { addDays } from "date-fns";
+import Modal from "./components/modal";
 
 function App() {
   const [expenses, setExpenses] = useLocalStorage("expenses", []);
   const [balanceValue, setBalanceValue] = useState("");
   const [balance, setBalance] = useLocalStorage("balance", 0);
+  const [modalBalanceValue, setModalBalanceValue] = useState(balance);
   const [viewAllExpense, setViewAllExpense] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const [currentExpense, setCurrentExpense] = useState({
     id: uuid(),
@@ -40,6 +43,28 @@ function App() {
 
   return (
     <div className=" p-2 h-screen  space-y-2 bg-[#1f2937]">
+      {showModal && (
+        <Modal onHide={() => setShowModal(false)} confirm={() => setBalance(modalBalanceValue)}>
+          <h2>You Current Balance</h2>
+          <div>
+            <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300">
+              Search
+            </label>
+            <div className="relative">
+              <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none text-white">₹</div>
+              <input
+                type="number"
+                id="default-search"
+                className="block p-4 pl-8 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Enter you current balance"
+                value={modalBalanceValue}
+                onChange={(e) => setModalBalanceValue(e.target.value)}
+                required
+              />
+            </div>
+          </div>
+        </Modal>
+      )}
       <p className="text-2xl text-white text-center my-5">Budgetter</p>
       <form onSubmit={handleAddBalance}>
         <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300">
@@ -77,9 +102,15 @@ function App() {
 
       <div className="w-full h-full bg-gray-700 rounded-md text-white p-3 flex flex-col gap-3">
         <div className="flex items-center">
-          <p className=" text-2xl">
+          <p className=" text-2xl flex items-center gap-2 flex-wrap">
             You Current Balance is:{" "}
             <span className={`${balance < 0 ? "text-red-500 font-semibold" : "text-white"}`}>{internationalizeCurrency(balance)} </span>
+            <button
+              className=" ml-2 py-1 px-2 shadow-md no-underline rounded-full bg-green-500 hover:bg-green-600 text-white font-sans font-semibold  text-xs border-green-500 btn-primary hover:text-white hover:bg-green-500-light focus:outline-none active:shadow-none"
+              onClick={() => setShowModal(true)}
+            >
+              Change *
+            </button>
           </p>
           {/* <button
             className=" ml-2 py-1 px-2 shadow-md no-underline rounded-full bg-green-500 text-white font-sans font-semibold  text-xs border-green-500 btn-primary hover:text-white hover:bg-green-500-light focus:outline-none active:shadow-none"
