@@ -4,19 +4,7 @@ import formatRelative from "date-fns/formatRelative";
 import { useLocalStorage, internationalizeCurrency } from "./hooks";
 import { addDays } from "date-fns";
 import Modal from "./components/modal";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  BarChart,
-  Bar,
-  Cell,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+import { LineChart, Line, XAxis, YAxis, BarChart, Bar, Cell, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import SalaryAutomate from "./components/SalaryAutomate";
 import SalaryDivider from "./components/SalaryDivider";
 
@@ -92,9 +80,7 @@ function App() {
 
     const expense = {
       ...currentExpense,
-      category: expenseCategories.filter(
-        (category) => category.name === categoryId
-      ),
+      category: expenseCategories.filter((category) => category.name === categoryId),
     };
 
     setExpenses((prev) => [...prev, expense]);
@@ -111,18 +97,11 @@ function App() {
 
   const handleRemoveExpense = (id) => {
     setExpenses((prev) => prev.filter((expense) => expense.id !== id));
-    setBalance(
-      (prev) =>
-        prev +
-        parseInt(expenses.filter((expense) => expense.id == id)[0].amount)
-    );
+    setBalance((prev) => prev + parseInt(expenses.filter((expense) => expense.id == id)[0].amount));
   };
 
   useEffect(() => {
-    if (
-      new Date(salaryAuto.salaryDate).getTime() < new Date().getTime() &&
-      salaryAuto.isDone === false
-    ) {
+    if (new Date(salaryAuto.salaryDate).getTime() < new Date().getTime() && salaryAuto.isDone === false) {
       console.log("Salary Credited!", salaryAuto);
       setBalance((prev) => +prev + parseInt(salaryAuto.salary));
       setSalaryAuto({ ...salaryAuto, isDone: true });
@@ -131,42 +110,18 @@ function App() {
 
   useEffect(() => {
     const months = {
-      January: expenses.filter(
-        (expense) => new Date(expense.date).getMonth() === 0
-      ),
-      February: expenses.filter(
-        (expense) => new Date(expense.date).getMonth() === 1
-      ),
-      March: expenses.filter(
-        (expense) => new Date(expense.date).getMonth() === 2
-      ),
-      April: expenses.filter(
-        (expense) => new Date(expense.date).getMonth() === 3
-      ),
-      May: expenses.filter(
-        (expense) => new Date(expense.date).getMonth() === 4
-      ),
-      June: expenses.filter(
-        (expense) => new Date(expense.date).getMonth() === 5
-      ),
-      July: expenses.filter(
-        (expense) => new Date(expense.date).getMonth() === 6
-      ),
-      August: expenses.filter(
-        (expense) => new Date(expense.date).getMonth() === 7
-      ),
-      September: expenses.filter(
-        (expense) => new Date(expense.date).getMonth() === 8
-      ),
-      October: expenses.filter(
-        (expense) => new Date(expense.date).getMonth() === 9
-      ),
-      November: expenses.filter(
-        (expense) => new Date(expense.date).getMonth() === 10
-      ),
-      December: expenses.filter(
-        (expense) => new Date(expense.date).getMonth() === 11
-      ),
+      January: expenses.filter((expense) => new Date(expense.date).getMonth() === 0),
+      February: expenses.filter((expense) => new Date(expense.date).getMonth() === 1),
+      March: expenses.filter((expense) => new Date(expense.date).getMonth() === 2),
+      April: expenses.filter((expense) => new Date(expense.date).getMonth() === 3),
+      May: expenses.filter((expense) => new Date(expense.date).getMonth() === 4),
+      June: expenses.filter((expense) => new Date(expense.date).getMonth() === 5),
+      July: expenses.filter((expense) => new Date(expense.date).getMonth() === 6),
+      August: expenses.filter((expense) => new Date(expense.date).getMonth() === 7),
+      September: expenses.filter((expense) => new Date(expense.date).getMonth() === 8),
+      October: expenses.filter((expense) => new Date(expense.date).getMonth() === 9),
+      November: expenses.filter((expense) => new Date(expense.date).getMonth() === 10),
+      December: expenses.filter((expense) => new Date(expense.date).getMonth() === 11),
     };
   }, []);
 
@@ -175,22 +130,14 @@ function App() {
       {/* Balance Change Modal */}
 
       {showModal && (
-        <Modal
-          onHide={() => setShowModal(false)}
-          confirm={() => setShowModal(false)}
-        >
+        <Modal onHide={() => setShowModal(false)} confirm={() => setShowModal(false)}>
           <h2>You Current Balance</h2>
           <div>
-            <label
-              htmlFor="default-search"
-              className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300"
-            >
+            <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300">
               Search
             </label>
             <div className="relative">
-              <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none text-white">
-                ₹
-              </div>
+              <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none text-white">₹</div>
               <input
                 type="number"
                 id="default-search"
@@ -206,22 +153,15 @@ function App() {
       )}
 
       {/* Salary Automate */}
-      {salaryAuto.showModal && (
-        <SalaryAutomate salaryAuto={salaryAuto} setSalaryAuto={setSalaryAuto} />
-      )}
+      {salaryAuto.showModal && <SalaryAutomate salaryAuto={salaryAuto} setSalaryAuto={setSalaryAuto} />}
 
-      {showSalaryDivider && (
-        <SalaryDivider setShowModal={setShowSalaryDivider} />
-      )}
+      {showSalaryDivider && <SalaryDivider setShowModal={setShowSalaryDivider} />}
 
       <p className="text-2xl text-white text-center my-5">Budgetter</p>
 
       {/* Balance Add Form */}
       <form onSubmit={handleAddBalance}>
-        <label
-          htmlFor="default-search"
-          className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300"
-        >
+        <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300">
           Search
         </label>
         <div className="relative">
@@ -233,12 +173,7 @@ function App() {
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              ></path>
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
             </svg>
           </div>
 
@@ -265,13 +200,7 @@ function App() {
         <div className="flex items-center">
           <p className=" text-2xl flex items-center gap-2 flex-wrap">
             You Current Balance is:{" "}
-            <span
-              className={`${
-                balance < 0 ? "text-red-500 font-semibold" : "text-white"
-              }`}
-            >
-              {internationalizeCurrency(balance)}{" "}
-            </span>
+            <span className={`${balance < 0 ? "text-red-500 font-semibold" : "text-white"}`}>{internationalizeCurrency(balance)} </span>
             <button
               className=" ml-2 py-1 px-2 shadow-md no-underline rounded-full bg-green-500 hover:bg-green-600 text-white font-sans font-semibold  text-xs border-green-500 btn-primary hover:text-white hover:bg-green-500-light focus:outline-none active:shadow-none"
               onClick={() => setShowModal(true)}
@@ -283,10 +212,7 @@ function App() {
 
         {/* Add Expense Form */}
         <form onSubmit={handleAddExpense}>
-          <label
-            htmlFor="default-search"
-            className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300"
-          >
+          <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300">
             Search
           </label>
           <div className="relative flex flex-col sm:flex-row gap-2">
@@ -298,12 +224,7 @@ function App() {
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                ></path>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
               </svg>
             </div>
             <select
@@ -322,9 +243,7 @@ function App() {
               className="block p-4 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="What's you recent expense?"
               value={currentExpense.title}
-              onChange={(e) =>
-                setCurrentExpense({ ...currentExpense, title: e.target.value })
-              }
+              onChange={(e) => setCurrentExpense({ ...currentExpense, title: e.target.value })}
               required
             />
             <input
@@ -332,9 +251,7 @@ function App() {
               className="block p-4  w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="How much did you spend?"
               value={currentExpense.amount}
-              onChange={(e) =>
-                setCurrentExpense({ ...currentExpense, amount: e.target.value })
-              }
+              onChange={(e) => setCurrentExpense({ ...currentExpense, amount: e.target.value })}
               required
             />
             <button
@@ -385,9 +302,7 @@ function App() {
         {expenses.length > 0 && (
           <div className="p-4  bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
-                Latest Expenses
-              </h3>
+              <h3 className="text-xl font-bold leading-none text-gray-900 dark:text-white">Latest Expenses</h3>
               <button
                 onClick={() => setViewAllExpense((prev) => !prev)}
                 href="#"
@@ -403,21 +318,27 @@ function App() {
                   -
                   {internationalizeCurrency(
                     expenses
-                      .filter(
-                        (expense) =>
-                          new Date(expense.date).getDate() ===
-                          new Date().getDate()
-                      )
+                      .filter((expense) => new Date(expense.date).getDate() === new Date().getDate())
                       .reduce(function (previousValue, currentValue) {
                         return +previousValue + parseInt(currentValue.amount);
                       }, 0)
                   )}{" "}
                 </span>
               </p>
-              <ul
-                role="list"
-                className="divide-y divide-gray-200 dark:divide-gray-700"
-              >
+              <p className=" text-md flex items-center gap-2 flex-wrap text-gray-800 dark:text-white">
+                Yesterday you spend:{" "}
+                <span className="text-red-500">
+                  -
+                  {internationalizeCurrency(
+                    expenses
+                      .filter((expense) => new Date(expense.date).getDate() === new Date().getDate() - 1)
+                      .reduce(function (previousValue, currentValue) {
+                        return +previousValue + parseInt(currentValue.amount);
+                      }, 0)
+                  )}{" "}
+                </span>
+              </p>
+              <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
                 {expenses
                   .sort((a, b) => b.date - a.date)
                   .slice(0, viewAllExpense ? expenses.length : 5)
@@ -438,14 +359,9 @@ function App() {
                             </div>
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                              {expense.title}
-                            </p>
+                            <p className="text-sm font-medium text-gray-900 truncate dark:text-white">{expense.title}</p>
                             <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                              {formatRelative(
-                                addDays(expense.date, 0),
-                                new Date()
-                              )}
+                              {formatRelative(addDays(expense.date, 0), new Date())}
                             </p>
                           </div>
                           <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
@@ -474,10 +390,7 @@ function App() {
           height={400}
           className=" scale-50 sm:scale-100"
           data={expenses
-            .filter(
-              (expense) =>
-                new Date(expense.date).getDate() === new Date().getDate()
-            )
+            .filter((expense) => new Date(expense.date).getDate() === new Date().getDate())
             .map((expense) => {
               return {
                 name: expense.title,
@@ -492,6 +405,98 @@ function App() {
           <XAxis dataKey="name" />
           <YAxis dataKey="amt" />
         </LineChart>
+      </div>
+
+      {/* Summary */}
+      <div className="w-full h-full  bg-gray-700 rounded-md text-white p-3 flex flex-col justify-center gap-3 ">
+        <h2 className="text-2xl font-bold text-center">You expense history & summary</h2>
+        <div className="p-3 w-full h-full flex flex-col gap-2  items-center justify-center">
+          {/* Today */}
+          <p className=" p-1 rounded-full text-md flex items-center gap-2 flex-wrap text-gray-800 dark:text-white">
+            Today you spend:{" "}
+            <span className="text-red-500">
+              -
+              {internationalizeCurrency(
+                expenses
+                  .filter((expense) => new Date(expense.date).getDate() === new Date().getDate())
+                  .reduce(function (previousValue, currentValue) {
+                    return +previousValue + parseInt(currentValue.amount);
+                  }, 0)
+              )}{" "}
+            </span>
+          </p>
+          {/* Yesterday */}
+          <p className=" p-1 rounded-full text-md flex items-center gap-2 flex-wrap text-gray-800 dark:text-white">
+            Yesterday you spend:{" "}
+            <span className="text-red-500">
+              -
+              {internationalizeCurrency(
+                expenses
+                  .filter((expense) => new Date(expense.date).getDate() === new Date().getDate() - 1)
+                  .reduce(function (previousValue, currentValue) {
+                    return +previousValue + parseInt(currentValue.amount);
+                  }, 0)
+              )}{" "}
+            </span>
+          </p>
+          {/* Week */}
+          <p className=" p-1 rounded-full text-md flex items-center gap-2 flex-wrap text-gray-800 dark:text-white">
+            This month you spend:{" "}
+            <span className="text-red-500">
+              -
+              {internationalizeCurrency(
+                expenses
+                  .filter((expense) => new Date(expense.date).getMonth() === new Date().getMonth())
+                  .reduce(function (previousValue, currentValue) {
+                    return +previousValue + parseInt(currentValue.amount);
+                  }, 0)
+              )}{" "}
+            </span>
+          </p>
+          {/* Last Week */}
+          <p className=" p-1 rounded-full text-md flex items-center gap-2 flex-wrap text-gray-800 dark:text-white">
+            Last month you spend:{" "}
+            <span className="text-red-500">
+              -
+              {internationalizeCurrency(
+                expenses
+                  .filter((expense) => new Date(expense.date).getMonth() === new Date().getMonth() - 1)
+                  .reduce(function (previousValue, currentValue) {
+                    return +previousValue + parseInt(currentValue.amount);
+                  }, 0)
+              )}{" "}
+            </span>
+          </p>
+          {/* Year */}
+          <p className=" p-1 rounded-full text-md flex items-center gap-2 flex-wrap text-gray-800 dark:text-white">
+            This year you spend:{" "}
+            <span className="text-red-500">
+              -
+              {internationalizeCurrency(
+                expenses
+                  .filter((expense) => new Date(expense.date).getFullYear() === new Date().getFullYear())
+                  .reduce(function (previousValue, currentValue) {
+                    return +previousValue + parseInt(currentValue.amount);
+                  }, 0)
+              )}{" "}
+            </span>
+          </p>
+
+          <hr className=" border-2 bg-transparent border-gray-500 w-full my-3" />
+
+          {/* Average */}
+          <p className=" p-1 rounded-full text-md flex items-center gap-2 flex-wrap text-gray-800 dark:text-white">
+            Everyday Average you spend:
+            <span className="text-red-500">
+              -
+              {internationalizeCurrency(
+                expenses.reduce(function (previousValue, currentValue, i) {
+                  return Math.round((parseInt(previousValue) + parseInt(currentValue)) / parseInt(previousValue.length));
+                }, 0)
+              )}{" "}
+            </span>
+          </p>
+        </div>
       </div>
     </div>
   );
