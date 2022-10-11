@@ -491,7 +491,7 @@ function App() {
               -
               {internationalizeCurrency(
                 expenses.reduce(function (previousValue, currentValue, i) {
-                  return Math.round((parseInt(previousValue) + parseInt(currentValue)) / parseInt(previousValue.length));
+                  return Math.round((parseInt(previousValue.amount) + parseInt(currentValue.amount)) / parseInt(previousValue.amount.length));
                 }, 0)
               )}{" "}
             </span>
