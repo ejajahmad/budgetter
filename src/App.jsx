@@ -412,7 +412,7 @@ function App() {
         <h2 className="text-2xl font-bold text-center">You expense history & summary</h2>
         <div className="p-3 w-full h-full flex flex-col gap-2  items-center justify-center">
           {/* Today */}
-          <p className=" p-1 rounded-full text-md flex items-center gap-2 flex-wrap text-gray-800 dark:text-white">
+          <p className=" p-1 rounded-full text-md flex items-center gap-2 flex-wrap text-white">
             Today you spend:{" "}
             <span className="text-red-500">
               -
@@ -426,7 +426,7 @@ function App() {
             </span>
           </p>
           {/* Yesterday */}
-          <p className=" p-1 rounded-full text-md flex items-center gap-2 flex-wrap text-gray-800 dark:text-white">
+          <p className=" p-1 rounded-full text-md flex items-center gap-2 flex-wrap text-white">
             Yesterday you spend:{" "}
             <span className="text-red-500">
               -
@@ -440,7 +440,7 @@ function App() {
             </span>
           </p>
           {/* Week */}
-          <p className=" p-1 rounded-full text-md flex items-center gap-2 flex-wrap text-gray-800 dark:text-white">
+          <p className=" p-1 rounded-full text-md flex items-center gap-2 flex-wrap text-white">
             This month you spend:{" "}
             <span className="text-red-500">
               -
@@ -454,7 +454,7 @@ function App() {
             </span>
           </p>
           {/* Last Week */}
-          <p className=" p-1 rounded-full text-md flex items-center gap-2 flex-wrap text-gray-800 dark:text-white">
+          <p className=" p-1 rounded-full text-md flex items-center gap-2 flex-wrap text-white">
             Last month you spend:{" "}
             <span className="text-red-500">
               -
@@ -468,7 +468,7 @@ function App() {
             </span>
           </p>
           {/* Year */}
-          <p className=" p-1 rounded-full text-md flex items-center gap-2 flex-wrap text-gray-800 dark:text-white">
+          <p className=" p-1 rounded-full text-md flex items-center gap-2 flex-wrap text-white">
             This year you spend:{" "}
             <span className="text-red-500">
               -
@@ -485,15 +485,14 @@ function App() {
           <hr className=" border-2 bg-transparent border-gray-500 w-full my-3" />
 
           {/* Average */}
-          <p className=" p-1 rounded-full text-md flex items-center gap-2 flex-wrap text-gray-800 dark:text-white">
+          <p className=" p-1 rounded-full text-md flex items-center gap-2 flex-wrap text-white">
             Everyday Average you spend:
             <span className="text-red-500">
               -
               {internationalizeCurrency(
-                expenses.reduce(function (previousValue, currentValue, i) {
-                  return Math.round((parseInt(previousValue.amount) + parseInt(currentValue.amount)) / parseInt(previousValue.amount.toString().length));
-                }, 0)
-              )}{" "}
+                expenses.map((expense) => parseInt(expense.amount)).reduce((a, c) => a + c, 0) /
+                  expenses.map((expense) => parseInt(expense.amount)).length
+              )}
             </span>
           </p>
         </div>
